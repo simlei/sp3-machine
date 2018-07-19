@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+tsb -C "shellenv_interactive" \
+    -s \
+    --and -m sp3 \
+    --and -m graspitmod \
+    --and --eval finddirs -P "$TS_MODULE_PATH" -c 'module.layout'

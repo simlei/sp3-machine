@@ -1,0 +1,29 @@
+: ${_ts:="$HOME/touchstone/touchstone-lib"} # may get set by development shell
+_machine="$HOME/touchstone/machines/sp3"
+_graspitmod="$HOME/sandbox/graspitmod"
+source "$_ts/rcutils.sh"
+
+export PATH="$_ts/bin:$PATH"
+export TS_MODULE_PATH="$HOME/touchstone/modules" # sp3 .tsb files rely(ied) on this..
+export TS_MODULES="$_machine:$_graspitmod:$_ts" # get sourced by-name right now
+
+if [[ $TSB_DEVMODE == 1 ]]; then
+    export DEBUG_TSB_OUTPUT=0
+fi
+
+eval "$( tsb -C shellenv_module \
+    --stdlib --and \
+    -m sp3 
+)"
+eval "$( 
+    tsb -C shellenv_module \
+        -m graspitmod --and \
+        --eval finddirs -P "$TS_MODULE_PATH" -c 'module.layout'
+)"
+eval "$( 
+    tsb -C shellenv_interactive \
+        --stdlib --and \
+        -p "$_machine" --and \
+        -m graspitmod --and \
+        --eval finddirs -P "$TS_MODULE_PATH" -c 'module.layout'
+)"

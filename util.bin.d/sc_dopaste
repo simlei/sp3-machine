@@ -1,0 +1,4 @@
+#!/bin/bash
+xdotool key ctrl+v
+xdotool key "Return"
+fake_window

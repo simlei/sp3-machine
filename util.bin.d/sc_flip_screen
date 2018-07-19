@@ -1,0 +1,3 @@
+#!/bin/bash
+amm "/home/simon/ammSc/launcherscripts/rot.sc" 
+fake_window

@@ -1,0 +1,19 @@
+setup_rcfiles() {
+    if [[ ! $mod_machine_root ]]; then
+        log_error "mod_machine_root: '$mod_machine_root' not specifies, some problem with your setup"
+        return 1
+    fi
+    if [[ -f "$HOME/.bashrc" ]]; then
+        mv "$HOME/.bashrc" "$HOME/.bashrc_$RANDOM.bak"
+    fi
+    ln -sf "$mod_machine_root/bash_interactive.rc" "$HOME/.bashrc" || { log_error could not link bashrc; return 1; }
+
+    if [[ -f "$HOME/.bash_profile" ]]; then
+        mv "$HOME/.bash_profile" "$HOME/.bash_profile_$RANDOM.bak"
+    fi
+    ln -sf "$mod_machine_root/bash_login.rc" "$HOME/.bash_profile" || { log_error could not link bash_profile; return 1; }
+    
+    if [[ -f "$HOME/.profile" ]]; then
+        mv "$HOME/.profile" "$HOME/.profile_$RANDOM.bak"
+    fi
+}

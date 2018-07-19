@@ -1,0 +1,3 @@
+#!/bin/bash
+xdotool key shift+alt+q
+fake_window

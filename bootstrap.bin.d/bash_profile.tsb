@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+tsb -C "shellenv_login" \
+    -s \
+    --and -m sp3 \
+    --and --eval finddirs -P "$TS_MODULE_PATH" -c 'module.layout'

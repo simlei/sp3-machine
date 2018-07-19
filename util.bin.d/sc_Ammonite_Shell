@@ -1,0 +1,3 @@
+#!/bin/bash
+  gnome-terminal --working-directory=/home/simon/ammSc -e "amm"
+  fake_window

@@ -1,4 +1,4 @@
-: ${_ts:="$HOME/touchstone/touchstone-lib"} # may get set by development shell
+: ${_ts:="$HOME/touchstone/touchstone-lib-master"} # may get set by development shell
 _machine="$HOME/touchstone/machines/sp3"
 _graspitmod="$HOME/sandbox/graspitmod"
 source "$_ts/rcutils.sh"

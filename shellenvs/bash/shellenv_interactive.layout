@@ -1,0 +1,10 @@
+shellenv_add_recursive_entry() {
+    #TODO: check args
+    local prefix="$1"
+    local context="$2"
+    local wd="$3"
+    local cmd="${4:-shellenv}"
+    local entry="$( printf '%s\t%s\t%s\t%s' "$prefix" "$context" "$wd" "$cmd" )"
+    shellenv_recursive_entries+=("$entry")
+}
+shellenv_add_recursive_entry 

@@ -14,14 +14,37 @@ fi
 
 _shellmode=interactive
 
-eval "$(tsb -c shellenv_module --stdlib --and -c shellenv_interactive --stdlib)"
-eval "$( tsb -C shellenv_module -p "$_machine" )"
-eval "$( tsb -C shellenv_module -p "$_graspitmod" )"
-eval "$( tsb -C shellenv_module --eval finddirs -P "$TS_MODULE_PATH" -c 'module.layout' )"
 
-eval "$( 
-        tsb -C shellenv_$_shellmode \
-            -p "$_machine" --and  \
-            -p "$_graspitmod" --and \
-            --eval finddirs -P "$TS_MODULE_PATH" -c 'module.layout'
-)"
+_cache() {
+    local mainname="$1"
+    if [[ ! $mainname ]]; then
+        echo "provide a name for the cache!" >&2
+        return 1
+    fi
+    shift
+    logged --silent --cached --name "$mainname" --dir "$_machine/logs" --prefix 'interactive' --cached-shortmsg 'interactive' :::: "$@" 
+}
+uncache() {
+    local today=$( date '+%Y_%m_%d__%H_%M_%S' );
+    local logs="$_machine/logs"
+    local logs_old="$_machine/logs_old"
+    mkdir -p "$logs_old"
+    if [[ -e "$logs" ]]; then
+        mv "$logs" "$logs_old/$today" && mkdir -p "$logs"
+    fi
+}
+
+rcfun() {
+    eval "$( _cache mod_stdlib tsb -c shellenv_module --stdlib --and -c shellenv_interactive --stdlib)"
+    eval "$( _cache mod_machine tsb -C shellenv_module -p "$_machine" )"
+    eval "$( _cache mod_graspit tsb -C shellenv_module -p "$_graspitmod" )"
+    eval "$( _cache mod_software tsb -C shellenv_module --eval finddirs -P "$TS_MODULE_PATH" -c 'module.layout' )"
+
+    eval "$( 
+            _cache interactive_all tsb -C shellenv_$_shellmode \
+                -p "$_machine" --and  \
+                -p "$_graspitmod" --and \
+                --eval finddirs -P "$TS_MODULE_PATH" -c 'module.layout'
+    )"
+}
+rcfun
